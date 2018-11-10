@@ -1,62 +1,23 @@
 import React, { Component } from 'react'
-import Layout from '../components/MyLayout'
 import Link from 'next/link'
-import 'isomorphic-fetch'
+import Layout from '../components/MyLayout'
 
 const PostLink = (props) => (
   <li>
-    <Link href={`/post?id=${props.id}`}>
-      <a>{props.title}</a>
+    <Link href={`/post?title=${ props.title }`}>
+      <a>{ props.title }</a>
     </Link>
   </li>
 )
 
-class Page extends Component {
+export default () => (
+  <Layout>
+    <h1>Esse é o meu Blog com Next.js! ;-P</h1>
 
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      posts: []
-    }
-  }
-
-  componentDidMount() {
-    fetch('http://assistenciafarmaceutica.far.br/wp-json/wp/v2/posts/', {
-      method: 'GET'
-    })
-      .then(response =>
-        response.json().then(data => {
-          data.map(item => {
-            this.setState({
-              posts: this.state.posts.concat(
-                [
-                  [item.id, item.title.rendered, item.date, item.content.rendered]
-                ]
-              )
-            })
-          })
-          console.log(this.state)
-        }))
-      .catch(function (err) {
-        console.error(err);
-      })
-  }
-
-  render() {
-    const { posts } = this.state
-
-    return (
-      <Layout>
-        <h1>Meu Blog! ;-P</h1>
-        {
-          posts.map(e => (
-            <PostLink title={e[1]} id={e[0]} />
-          ))
-        }
-      </Layout>
-    )
-  }
-}
-
-export default Page
+    <ul>
+      <PostLink title="Hello NextJS! ;-P" />
+      <PostLink title="Learning NextJS" />
+      <PostLink title="Deploy u app with Zeit" />
+    </ul>
+  </Layout>
+)
